@@ -1,0 +1,5 @@
+1. User clicks to create a new note 
+2. The value in the note input field is submitted in the form data via HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note 
+3. The server receives the POST request and adds the form data to the notes array
+4. Browser reloads the page because of the Location "/notes" in the 302 response (same page we're on) GET https://studies.cs.helsinki.fi/exampleapp/notes
+5. main.css, main.js, and data.json are fetched in 3 separate GETs which support rendering the page and providing the notes array data to display
