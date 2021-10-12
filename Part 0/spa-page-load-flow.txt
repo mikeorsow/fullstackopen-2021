@@ -1,0 +1,4 @@
+1. Browser fetches HTML via GET https://studies.cs.helsinki.fi/exampleapp/spa
+2. Browser then fetches main.css, spa.js via 2 separate GETs
+3. The javascript fetches the notes via GET https://studies.cs.helsinki.fi/exampleapp/data.json
+4. The javascript parses the JSON response and displays the notes on the page
