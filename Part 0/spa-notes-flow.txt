@@ -1,0 +1,4 @@
+1. User clicks to save a note
+2. The javascript registers an event handler to prevent the default form submission which would normally result in a GET and redirect.
+3. The event handler then creates the note, adds it to the notes list, redraws the notes on the page, and sends the note data as JSON to the server via a POST to https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+4. Server responds with 201 created
