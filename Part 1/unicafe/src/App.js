@@ -16,12 +16,24 @@ const Button = ({onClick, text}) => {
   )
 }
 
-const Statistics = ({choice, countChoice}) => {
+const Statistics = (props) => {
   return (
-    <>
-      {choice}: {countChoice}
-      <br />
-    </>
+    <table>
+      <tbody>
+        <tr>
+          <td>Good</td>
+          <td>{props.countGood}</td>
+        </tr>
+        <tr>
+          <td>Neutral</td>
+          <td>{props.countNeutral}</td>
+        </tr>
+        <tr>
+          <td>Bad</td>
+          <td>{props.countBad}</td>
+        </tr>
+      </tbody>
+    </table>
   )
 }
 
@@ -38,9 +50,8 @@ const App = () => {
       <Button text='neutral' />
       <Button text='bad' />
       <Header title='Stats' />
-      <Statistics choice='good' countChoice= '3' />
-      <Statistics choice='neutral' countChoice= '5' />
-      <Statistics choice='bad' countChoice= '99' />
+      <Statistics countGood='3' countNeutral='4' countBad='99' />
+
     </div>
   )
 }
