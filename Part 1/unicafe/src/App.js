@@ -8,9 +8,9 @@ const Header = ({title}) => {
   )
 }
 
-const Button = ({onClick, text}) => {
+const Button = ({handleClick, text}) => {
   return (
-    <button onClick={onClick}>
+    <button onClick={handleClick}>
       {text}
     </button>
   )
@@ -42,16 +42,18 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const increaseGood = () => setGood(good + 1);
+  const increaseNeutral = () => setNeutral(neutral + 1);
+  const increaseBad = () => setBad(bad + 1);
 
   return (
     <div>
       <Header title='Please provide feedback' />
-      <Button text='good' />
-      <Button text='neutral' />
-      <Button text='bad' />
+      <Button handleClick={increaseGood} text='good' />
+      <Button handleClick={increaseNeutral} text='neutral' />
+      <Button handleClick={increaseBad} text='bad' />
       <Header title='Stats' />
-      <Statistics countGood='3' countNeutral='4' countBad='99' />
-
+      <Statistics countGood={good} countNeutral={neutral} countBad={bad} />
     </div>
   )
 }
