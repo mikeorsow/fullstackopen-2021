@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 
-const Header = () => {
-
+const Header = ({title}) => {
+  return (
+    <>
+      <h1>{title}</h1>
+    </>
+  )
 }
 
 const Button = () => {
 
 }
 
-const Statistics = () {
+const Statistics = () => {
 
 }
 
@@ -20,7 +24,7 @@ const App = () => {
 
   return (
     <div>
-      code here
+      <Header title='Please provide feedback' />
     </div>
   )
 }
