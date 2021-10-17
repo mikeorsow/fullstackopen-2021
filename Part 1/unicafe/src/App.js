@@ -8,8 +8,12 @@ const Header = ({title}) => {
   )
 }
 
-const Button = () => {
-
+const Button = ({onClick, text}) => {
+  return (
+    <button onClick={onClick}>
+      {text}
+    </button>
+  )
 }
 
 const Statistics = () => {
@@ -25,6 +29,9 @@ const App = () => {
   return (
     <div>
       <Header title='Please provide feedback' />
+      <Button text='good' />
+      <Button text='neutral' />
+      <Button text='bad' />
       <Header title='Stats' />
     </div>
   )
