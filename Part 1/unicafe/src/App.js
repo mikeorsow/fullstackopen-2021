@@ -25,6 +25,7 @@ const App = () => {
   return (
     <div>
       <Header title='Please provide feedback' />
+      <Header title='Stats' />
     </div>
   )
 }
