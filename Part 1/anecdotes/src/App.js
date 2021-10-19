@@ -27,7 +27,6 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
-   
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(7).fill(0));
   const randomInt = () => Math.floor(Math.random()*anecdotes.length);
@@ -37,7 +36,10 @@ const App = () => {
     copyVotes[selected] += 1;
     setVotes(copyVotes);
   }
-  console.log(votes);
+  const topVoteIndex = () => {
+    return votes.indexOf(Math.max(...votes))
+  };
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
@@ -45,7 +47,7 @@ const App = () => {
       <Button handleClick={addVote} text='Vote' />
       <Button handleClick={showRandomAnecdote} text='Next Anecdote' />
       <h1>Anecdote with most votes</h1>
-      <Anecdote selectedAnecdote={anecdotes[0]} votes={votes[selected]} />
+      <Anecdote selectedAnecdote={anecdotes[topVoteIndex()]} votes={votes[topVoteIndex()]} />
     </div>
   )
 }
