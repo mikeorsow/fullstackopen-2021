@@ -8,11 +8,11 @@ const Button = ({handleClick, text}) => {
   )
 }
 
-const Anecdote = ({selectedAnecdote}) => {
+const Anecdote = ({selectedAnecdote, votes}) => {
   return (
     <>
       {selectedAnecdote}
-      <p>has number votes</p>
+      <p>has {votes} votes</p>
     </>
   )
 }
@@ -34,9 +34,12 @@ const App = () => {
   
   return (
     <div>
-      <Anecdote selectedAnecdote={anecdotes[selected]} />
+      <h1>Anecdote of the day</h1>
+      <Anecdote selectedAnecdote={anecdotes[selected]} votes='3' />
       <Button text='Vote' />
       <Button handleClick={showRandomAnecdote} text='Next Anecdote' />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote selectedAnecdote={anecdotes[0]} votes='99' />
     </div>
   )
 }
