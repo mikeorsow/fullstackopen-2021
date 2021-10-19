@@ -29,17 +29,23 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(7).fill(0));
   const randomInt = () => Math.floor(Math.random()*anecdotes.length);
   const showRandomAnecdote = () => setSelected(randomInt);
-  
+  const addVote = () => {
+    const copyVotes = [...votes];
+    copyVotes[selected] += 1;
+    setVotes(copyVotes);
+  }
+  console.log(votes);
   return (
     <div>
       <h1>Anecdote of the day</h1>
-      <Anecdote selectedAnecdote={anecdotes[selected]} votes='3' />
-      <Button text='Vote' />
+      <Anecdote selectedAnecdote={anecdotes[selected]} votes={votes[selected]} />
+      <Button handleClick={addVote} text='Vote' />
       <Button handleClick={showRandomAnecdote} text='Next Anecdote' />
       <h1>Anecdote with most votes</h1>
-      <Anecdote selectedAnecdote={anecdotes[0]} votes='99' />
+      <Anecdote selectedAnecdote={anecdotes[0]} votes={votes[selected]} />
     </div>
   )
 }
