@@ -1,5 +1,14 @@
 import React from 'react';
 
+const Courses = ({courses}) => {
+  const allCourses = courses.map(course => <Course key={course.id} course={course} />)
+  return (
+    <div>
+      {allCourses}
+    </div>
+  )
+}
+
 const Course = ({ course }) => {
   return (
     <div>
@@ -76,10 +85,10 @@ const App = () => {
       ]
     }
   ]
-  const allCourses = courses.map(course => <Course key={course.id} course={course} />)
+
   return (
     <div>
-      {allCourses}
+      <Courses courses={courses} />
     </div>
   )  
 }
