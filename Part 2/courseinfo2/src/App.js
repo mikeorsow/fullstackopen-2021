@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Course = ({ id, name, parts }) => {
+const Course = ({course}) => {
   return (
     <div>
-      <Header name={ name } />
-      <Content parts={ parts } />
-      <Total parts={ parts } />
+      <Header name={ course.name } />
+      <Content parts={ course.parts } />
+      <Total parts={ course.parts } />
     </div>
   )
 }
@@ -66,7 +66,7 @@ const App = () => {
 
   return (
     <div>
-      <Course {...course} />
+      <Course course={course} />
     </div>
   )  
 }
