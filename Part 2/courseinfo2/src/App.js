@@ -1,39 +1,29 @@
 import React from 'react';
 
-const Course = ({course}) => {
+const Course = ({ course }) => {
   return (
     <div>
-      <Header name={ course.name } />
-      <Content parts={ course.parts } />
-      <Total parts={ course.parts } />
+      <Header name={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
 
-const Header = ({ name }) => {
-  return (
-    <h1>{name}</h1>
-  )
-}
+const Header = ({ name }) => <h1>{name}</h1>
 
-const Part = ({part}) => {
-  console.log('part', part)
-  return (
-    <p>
-      {part.name} {part.exercises}
-    </p>    
-  )
-}
+
+const Part = ({ part }) => <p>{part.name} {part.exercises}</p>
 
 const Total = ({ parts }) => {
-  const sum = parts.reduce(( accumulator, part ) => accumulator + part.exercises, 0);
+  const sum = parts.reduce((accumulator, part) => accumulator + part.exercises, 0);
   return(
-    <p>Total of {sum} exercises</p>
+    <b>Total of {sum} exercises</b>
   ) 
 }
 
 const Content = ({ parts }) => {
-  const allParts = parts.map(part => <Part part={ part } />);
+  const allParts = parts.map(part => <Part key={part.id} part={part} />)
   return (
     <div>
       {allParts}
@@ -86,7 +76,7 @@ const App = () => {
       ]
     }
   ]
-  const allCourses = courses.map(course => <Course course={course} />)
+  const allCourses = courses.map(course => <Course key={course.id} course={course} />)
   return (
     <div>
       {allCourses}
