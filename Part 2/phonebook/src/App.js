@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' },
-    { name: 'Mitch Turdwick' }
-  ]) 
+  const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const contactList = persons.map(person => <div key={person.name}>{person.name}</div>);
+  const tryAddContact = (event) => {
+    event.preventDefault()
+    console.log(persons)
+    persons.find(person => person.name === newName.trim())
+    ? alert(`${newName} is already in your contact list`)
+    : addContact(event)
+  }
   const addContact = (event) => {
     event.preventDefault()
     console.log('button clicked', event.target)
@@ -25,7 +29,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addContact}>
+      <form onSubmit={tryAddContact}>
         <div>
           name: 
             <input 
@@ -33,7 +37,6 @@ const App = () => {
               onChange={handleNameChange}
             />
         </div>
-        <div>debug: {newName}</div>
         <div>
           <button type="submit">add</button>
         </div>
