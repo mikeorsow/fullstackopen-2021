@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
-  const contactList = persons.map(person => <div key={person.name}>{person.name}</div>);
+  const [ newNumber, setNewNumber] = useState('')
+  const contactList = persons.map(person => <div key={person.name}>{person.name} {person.number}</div>);
   const tryAddContact = (event) => {
     event.preventDefault()
     console.log(persons)
@@ -15,15 +16,21 @@ const App = () => {
     event.preventDefault()
     console.log('button clicked', event.target)
     const personObject = {
-       name: newName 
+       name: newName,
+       number: newNumber
     }
 
     setPersons(persons.concat(personObject))
     setNewName('')
+    setNewNumber('')
   }
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -33,10 +40,15 @@ const App = () => {
         <div>
           name: 
             <input 
-              value= {newName}
+              value={newName}
               onChange={handleNameChange}
             />
         </div>
+          number:
+            <input 
+              value={newNumber}
+              onChange={handleNumberChange}
+            />
         <div>
           <button type="submit">add</button>
         </div>
