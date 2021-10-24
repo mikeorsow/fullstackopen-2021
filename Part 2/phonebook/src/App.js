@@ -6,6 +6,37 @@ const Contact = ( {filteredContacts} ) => {
   )
 }
 
+const Filter = ({ searchTerm, handleSearchChange }) => {
+  return (
+    <div>
+        Search Contacts: <input 
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+  )
+}
+
+const ContactForm = ({ tryAddContact, newName, handleNameChange, newNumber, handleNumberChange }) => {
+  return (
+    <form onSubmit={tryAddContact}>
+    <div>
+      name: <input 
+        value={newName}
+        onChange={handleNameChange}
+      />
+    </div>
+      number: <input 
+        value={newNumber}
+        onChange={handleNumberChange}
+      />
+    <div>
+      <button type="submit">add</button>
+    </div>
+  </form>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -43,28 +74,9 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        Search Contacts: <input 
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
+      <Filter searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
       <h2>Add Contact</h2>
-      <form onSubmit={tryAddContact}>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-          number: <input 
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <ContactForm tryAddContact={tryAddContact} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Contacts</h2>
       <Contact filteredContacts={filteredContacts} />
     </div>
