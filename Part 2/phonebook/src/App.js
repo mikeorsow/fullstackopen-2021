@@ -13,7 +13,7 @@ const Filter = ({ searchTerm, handleSearchChange }) => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-      </div>
+    </div>
   )
 }
 
