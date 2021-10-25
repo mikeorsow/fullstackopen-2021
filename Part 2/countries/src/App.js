@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const FindCountry = () => {
+const FindCountry = ({ countrySearch, handleCountrySearchChange }) => {
   return (
     <p>
-        Search for a country: <input>
-        </input> 
-      </p>
+        Search for a country: <input
+          value={countrySearch}
+          onChange={handleCountrySearchChange} 
+        />
+    </p>
   )
 }
-
 function App() {
   const [countrySearch, setCountrySearch] = useState('')
   const [countries, setCountries] = useState([])
@@ -23,10 +24,28 @@ function App() {
       })
   }
 useEffect(fetchAllCountries, [])
-console.log('render', countries.length, countries)
+console.log('render', countries.length, countries);
+const handleCountrySearchChange = (event) => setCountrySearch(event.target.value);
+const countryToShow = 
+  countries.filter(country => country.name.common
+    .toLowerCase()
+    .includes(
+      countrySearch
+      .toLocaleLowerCase()
+    )
+  )
+console.log('countryToShow', countryToShow.map(country => country.name.common))
   return (
     <div>
-      <FindCountry />
+      <div>
+        <FindCountry 
+          countrySearch={countrySearch} 
+          handleCountrySearchChange={handleCountrySearchChange}
+        />
+      </div>
+        {countryToShow.map(country => <div key={country.cca2}> {country.name.common}</div>)}
+      <div>
+      </div>
     </div>
   );
 }
