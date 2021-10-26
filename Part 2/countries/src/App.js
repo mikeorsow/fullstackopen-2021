@@ -10,9 +10,9 @@ const FindCountry = ({ handleCountrySearchChange }) => (
 )
 
 const CountryNames = ({ filteredCountries, handleCountryClick }) => (
-  filteredCountries.map(country => 
-    <div key={country.cca2}> 
-      {country.name.common} <button onClick={handleCountryClick(country.name.common)}> Show</button>
+  filteredCountries.map((country, i) =>
+    <div key={country.cca2}>
+      {country.name.common} <button onClick={handleCountryClick(i)}> Show</button>
     </div>)
 )
 
@@ -29,7 +29,7 @@ const Country = ({ country }) => {
       <ul>
         {languages}
       </ul>
-      <img src={country.flags.png} height="100px"/>
+      <img src={country.flags.png} height="100px" />
     </div>
   )
 }
@@ -37,10 +37,10 @@ const Country = ({ country }) => {
 const CountryResults = ({ filteredCountries, handleCountryClick }) => {
   return (
     filteredCountries.length === 1
-      ? <Country country = {filteredCountries[0]} />
+      ? <Country country={filteredCountries[0]} />
       : filteredCountries.length <= 10
-      ? <CountryNames filteredCountries = {filteredCountries} handleCountryClick={handleCountryClick} />
-      : <p>Too many matches, please narrow your search</p>
+        ? <CountryNames filteredCountries={filteredCountries} handleCountryClick={handleCountryClick} />
+        : <p>Too many matches, please narrow your search</p>
   )
 }
 
@@ -60,13 +60,13 @@ const App = () => {
     const countriesFound = countries.filter(country => country.name.common.toLowerCase().includes(searchTerm));
     setFilteredCountries(countriesFound)
   }
-  const handleCountryClick = (countryName) => () => {
-    const clickedCountry = countries.filter(country => country.name.common.includes(countryName))
+  const handleCountryClick = (countryIndex) => () => {
+    const clickedCountry = [filteredCountries[countryIndex]]
     setFilteredCountries(clickedCountry)
   }
   return (
     <div>
-      <FindCountry handleCountrySearchChange={handleCountrySearchChange}/>
+      <FindCountry handleCountrySearchChange={handleCountrySearchChange} />
       <CountryResults filteredCountries={filteredCountries} handleCountryClick={handleCountryClick} />
     </div>
   );
