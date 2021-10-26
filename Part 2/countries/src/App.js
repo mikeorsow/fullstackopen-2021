@@ -1,19 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const FindCountry = ({ countrySearch, handleCountrySearchChange }) => {
+const FindCountry = ({ handleCountrySearchChange }) => (
+  <p>
+    Search for a country: <input
+      onChange={handleCountrySearchChange}
+    />
+  </p>
+)
+
+const CountryNames = ({ filteredCountries }) => (
+  filteredCountries.map(country => <div key={country.cca2}> {country.name.common}</div>)
+)
+
+const Country = ({ country }) => {
+  const languages = Object.values(country.languages).map(language => <li key={language}>{language}</li>);
   return (
-    <p>
-        Search for a country: <input
-          value={countrySearch}
-          onChange={handleCountrySearchChange} 
-        />
-    </p>
+    <div>
+      <h2>{country.name.common}</h2>
+      <p>
+        Capital: {country.capital} <br />
+        Population: {country.population}
+      </p>
+      <h4>Languages</h4>
+      <ul>
+        {languages}
+      </ul>
+    </div>
   )
 }
-function App() {
-  const [countrySearch, setCountrySearch] = useState('')
+
+const CountryResults = ({ filteredCountries }) => (
+  filteredCountries.length === 1
+    ? <Country country = {filteredCountries[0]} />
+    : filteredCountries.length <= 10
+    ? <CountryNames filteredCountries = {filteredCountries} />
+    : <p>Too many matches, please narrow your search</p>
+)
+
+const App = () => {
   const [countries, setCountries] = useState([])
+  const [filteredCountries, setFilteredCountries] = useState([])
   const fetchAllCountries = () => {
     console.log('effect')
     axios
@@ -23,31 +50,18 @@ function App() {
         setCountries(response.data)
       })
   }
-useEffect(fetchAllCountries, [])
-console.log('render', countries.length, countries);
-const handleCountrySearchChange = (event) => setCountrySearch(event.target.value);
-const countryToShow = 
-  countries.filter(country => country.name.common
-    .toLowerCase()
-    .includes(
-      countrySearch
-      .toLocaleLowerCase()
-    )
-  )
-console.log('countryToShow', countryToShow.map(country => country.name.common))
+  useEffect(fetchAllCountries, [])
+  const handleCountrySearchChange = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const countriesFound = countries.filter(country => country.name.common.toLowerCase().includes(searchTerm));
+    setFilteredCountries(countriesFound)
+  }
   return (
     <div>
-      <div>
-        <FindCountry 
-          countrySearch={countrySearch} 
-          handleCountrySearchChange={handleCountrySearchChange}
-        />
-      </div>
-        {countryToShow.map(country => <div key={country.cca2}> {country.name.common}</div>)}
-      <div>
-      </div>
+      <FindCountry handleCountrySearchChange={handleCountrySearchChange}/>
+      <CountryResults filteredCountries={filteredCountries} />
     </div>
   );
-}
+};
 
 export default App;
