@@ -9,8 +9,11 @@ const FindCountry = ({ handleCountrySearchChange }) => (
   </p>
 )
 
-const CountryNames = ({ filteredCountries }) => (
-  filteredCountries.map(country => <div key={country.cca2}> {country.name.common}</div>)
+const CountryNames = ({ filteredCountries, handleCountryClick }) => (
+  filteredCountries.map(country => 
+    <div key={country.cca2}> 
+      {country.name.common} <button onClick={handleCountryClick(country.name.common)}> Show</button>
+    </div>)
 )
 
 const Country = ({ country }) => {
@@ -26,27 +29,28 @@ const Country = ({ country }) => {
       <ul>
         {languages}
       </ul>
+      <img src={country.flags.png} height="100px"/>
     </div>
   )
 }
 
-const CountryResults = ({ filteredCountries }) => (
-  filteredCountries.length === 1
-    ? <Country country = {filteredCountries[0]} />
-    : filteredCountries.length <= 10
-    ? <CountryNames filteredCountries = {filteredCountries} />
-    : <p>Too many matches, please narrow your search</p>
-)
+const CountryResults = ({ filteredCountries, handleCountryClick }) => {
+  return (
+    filteredCountries.length === 1
+      ? <Country country = {filteredCountries[0]} />
+      : filteredCountries.length <= 10
+      ? <CountryNames filteredCountries = {filteredCountries} handleCountryClick={handleCountryClick} />
+      : <p>Too many matches, please narrow your search</p>
+  )
+}
 
 const App = () => {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
   const fetchAllCountries = () => {
-    console.log('effect')
     axios
       .get('https://restcountries.com/v3.1/all')
       .then(response => {
-        console.log('promise fulfilled')
         setCountries(response.data)
       })
   }
@@ -56,10 +60,14 @@ const App = () => {
     const countriesFound = countries.filter(country => country.name.common.toLowerCase().includes(searchTerm));
     setFilteredCountries(countriesFound)
   }
+  const handleCountryClick = (countryName) => () => {
+    const clickedCountry = countries.filter(country => country.name.common.includes(countryName))
+    setFilteredCountries(clickedCountry)
+  }
   return (
     <div>
       <FindCountry handleCountrySearchChange={handleCountrySearchChange}/>
-      <CountryResults filteredCountries={filteredCountries} />
+      <CountryResults filteredCountries={filteredCountries} handleCountryClick={handleCountryClick} />
     </div>
   );
 };
