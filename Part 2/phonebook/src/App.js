@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import contactService from './services/contacts'
 
-const Contact = ( {filteredContacts} ) => {
+const Contact = ({ filteredContacts, removeContact }) => {
   return (
-    filteredContacts.map(person => <div key={person.id}> {person.name} {person.number}</div>)
+    filteredContacts.map(person => 
+      <div key={person.id}> 
+        {person.name} {person.number} <button onClick={() => removeContact(person.id)} > Remove </button>
+      </div>
+    )
   )
 }
 
@@ -68,10 +72,25 @@ const App = () => {
        number: newNumber,
        id: contacts.length + 1
     }
-    setContacts(contacts.concat(contactObject))
-    setNewName('')
-    setNewNumber('')
+    contactService
+      .create(contactObject)
+      .then(response => {
+        setContacts(contacts.concat(contactObject))
+        setNewName('')
+        setNewNumber('')
+      })
   }
+
+  const removeContact = id => {
+    contactService
+      .remove(id)
+      .then( response => {
+        setContacts(contacts.filter(contact => contact.id !== id))
+        console.log('remove ran')
+      })
+  }
+
+  const handleRemoveClick = (id) => console.log('You just clicked to remove', id)
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleSearchChange = (event) => setSearchTerm(event.target.value)
@@ -84,7 +103,7 @@ const App = () => {
       <h2>Add Contact</h2>
       <ContactForm tryAddContact={tryAddContact} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Contacts</h2>
-      <Contact filteredContacts={filteredContacts} />
+      <Contact filteredContacts={filteredContacts} removeContact={removeContact} />
     </div>
   )
 }
