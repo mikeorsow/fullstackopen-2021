@@ -82,12 +82,14 @@ const App = () => {
   }
 
   const removeContact = id => {
-    contactService
-      .remove(id)
-      .then( response => {
-        setContacts(contacts.filter(contact => contact.id !== id))
-        console.log('remove ran')
-      })
+    
+    if (window.confirm('Delete this contact forever?')) {
+      contactService
+        .remove(id)
+        .then( response => {
+          setContacts(contacts.filter(contact => contact.id !== id))
+        })
+    }
   }
 
   const handleRemoveClick = (id) => console.log('You just clicked to remove', id)
