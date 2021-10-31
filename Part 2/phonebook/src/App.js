@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
 import contactService from "./services/contacts";
+import "./index.css";
+
+const Notification = ({ message, className }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className={className}>{message}</div>;
+};
 
 const Contact = ({ filteredContacts, removeContact }) => {
   return filteredContacts.map((person) => (
@@ -44,6 +52,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [notificationText, setNotificationText] = useState("");
+  const [notificationClassName, setnotificationClassName] = useState("");
 
   useEffect(() => {
     contactService.getAll().then((initialContacts) => {
@@ -57,21 +67,31 @@ const App = () => {
       (contact) => contact.name.toLowerCase() === newName.toLowerCase().trim()
     );
     if (newName.trim() === "") return alert("Name is required");
-    if (newNumber.trim() === '') return alert('Number is required');
+    if (newNumber.trim() === "") return alert("Number is required");
     if (existingContact) return updateContact(existingContact);
     else addContact();
   };
 
   const addContact = () => {
+    const maxId = Math.max(contacts.map((contact) => contact.id));
     const contactObject = {
       name: newName,
       number: newNumber,
-      id: contacts.length + 1,
+      id: maxId + 1,
     };
     contactService.create(contactObject).then((response) => {
       setContacts(contacts.concat(contactObject));
       clearInputs();
+      setNotificationText(`${newName} was added to your contacts!`);
+      setnotificationClassName("success");
+      clearNotification(3000);
     });
+  };
+
+  const clearNotification = (timeoutMsecs) => {
+    setTimeout(() => {
+      setNotificationText(null);
+    }, timeoutMsecs);
   };
 
   const clearInputs = () => {
@@ -90,16 +110,30 @@ const App = () => {
   const updateContact = (existingContact) => {
     const updatedContact = { ...existingContact, number: newNumber };
     if (
-      window.confirm(`${existingContact.name} already exists. Update this contact?`)
+      window.confirm(
+        `${existingContact.name} already exists. Update this contact?`
+      )
     ) {
-      contactService.update(existingContact.id, updatedContact).then((returnedContact) => {
-        setContacts(
-          contacts.map((contact) =>
-            contact.id !== existingContact.id ? contact : returnedContact
-          )
-        );
-        clearInputs();
-      });
+      contactService
+        .update(existingContact.id, updatedContact)
+        .then((returnedContact) => {
+          setContacts(
+            contacts.map((contact) =>
+              contact.id !== existingContact.id ? contact : returnedContact
+            )
+          );
+          clearInputs();
+        })
+        .catch((error) => {
+          setNotificationText(
+            `Unable to update contact. ${newName} was already deleted.`
+          );
+          setnotificationClassName("error");
+          clearNotification(5000);
+          setContacts(
+            contacts.filter((contact) => contact.id !== existingContact.id)
+          );
+        });
     }
   };
 
@@ -113,6 +147,10 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification
+        message={notificationText}
+        className={notificationClassName}
+      />
       <Filter searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
       <h2>Add Contact</h2>
       <ContactForm
